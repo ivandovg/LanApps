@@ -10,6 +10,7 @@ namespace LanApp1_2Client
 {
     class Program1Client
     {
+        // Lesson 1
         static void Main(string[] args)
         {
             Console.Title = "Lan Test - Client";

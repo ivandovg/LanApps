@@ -11,6 +11,8 @@ namespace LanApp1_1
 {
     class Program1Srv
     {
+        // Lesson 1
+
         //static bool IsRun = true;
         //static CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         //static CancellationToken token = new CancellationToken();
