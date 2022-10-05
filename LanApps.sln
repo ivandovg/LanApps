@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanApp1_2Client", "LanApp1_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanApp2_1", "LanApp2_1\LanApp2_1.csproj", "{BDB25C34-EB73-477B-862E-430C2EED65DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanApp2_2AsyncClient", "LanApp2_2AsyncClient\LanApp2_2AsyncClient.csproj", "{E7ED687B-C2F9-4E90-970E-B1BE9212923B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BDB25C34-EB73-477B-862E-430C2EED65DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDB25C34-EB73-477B-862E-430C2EED65DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDB25C34-EB73-477B-862E-430C2EED65DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7ED687B-C2F9-4E90-970E-B1BE9212923B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7ED687B-C2F9-4E90-970E-B1BE9212923B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7ED687B-C2F9-4E90-970E-B1BE9212923B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7ED687B-C2F9-4E90-970E-B1BE9212923B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

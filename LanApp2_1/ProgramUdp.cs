@@ -67,7 +67,7 @@ namespace LanApp2_1
                 {
                     StringBuilder builder = new StringBuilder();
                     int bytes = 0;
-                    byte[] buffer = new byte[256];
+                    byte[] buffer = new byte[32];
                     EndPoint receiveEndPoint = new IPEndPoint(IPAddress.Any, 0);
                     do
                     {
