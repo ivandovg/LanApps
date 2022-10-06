@@ -8,7 +8,7 @@ using System.Net.Sockets;
 
 namespace LanApp2_2AsyncClient
 {
-    public class AsyncTcpClient: IDisposable
+    public class AsyncTcpClient : IDisposable
     {
         Socket socket;
         IPEndPoint ipEndPoint;
@@ -23,7 +23,7 @@ namespace LanApp2_2AsyncClient
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             ipEndPoint = endPoint;
         }
-        public AsyncTcpClient(string ip, int port): this(new IPEndPoint(IPAddress.Parse(ip), port))
+        public AsyncTcpClient(string ip, int port) : this(new IPEndPoint(IPAddress.Parse(ip), port))
         {
 
         }
@@ -78,7 +78,7 @@ namespace LanApp2_2AsyncClient
 
         public void SendMessageAsync(string message)
         {
-            Task.Run(()=>SendMessage(message));
+            Task.Run(() => SendMessage(message));
         }
 
         public void ReceiveMessages()
@@ -89,17 +89,17 @@ namespace LanApp2_2AsyncClient
             StringBuilder builder = new StringBuilder();
             int bytes = 0;
             byte[] buffer = new byte[256];
-            while (socket.Connected)
+            //while (socket.Connected)
+            //{
+            do
             {
-                do
-                {
-                    bytes = socket.Receive(buffer);
-                    builder.Append(Encoding.UTF8.GetString(buffer, 0, bytes));
-                } while (socket.Available > 0);
+                bytes = socket.Receive(buffer);
+                builder.Append(Encoding.UTF8.GetString(buffer, 0, bytes));
+            } while (socket.Available > 0);
 
-                ReceiveMessage?.Invoke(this, builder.ToString());
-                builder.Clear();
-            }
+            ReceiveMessage?.Invoke(this, builder.ToString());
+            builder.Clear();
+            //}
         }
 
         public void ReceiveMessagesAsync() => Task.Run(ReceiveMessages);
