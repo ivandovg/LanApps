@@ -11,10 +11,14 @@ namespace LanApp3_1Server
     class TcpServerClass
     {
         TcpListener listener;
+        List<TcpClientConnection> clientConnections;
         public event Action<string> MessageString;
+        //public event Action<TcpClientConnection, string> ClientMessage;
+        
         public TcpServerClass(IPAddress address, int port)
         {
             listener = new TcpListener(address, port);
+            clientConnections = new List<TcpClientConnection>();
         }
 
         public Task StartServerAsync() => Task.Run(StartServer);
@@ -23,19 +27,25 @@ namespace LanApp3_1Server
         {
             try
             {
+                MessageString?.Invoke("Start server...");
                 listener.Start(100);
+                MessageString?.Invoke("Wait connection...");
                 while (true)
                 {
-                    MessageString?.Invoke("Wait connection...");
                     TcpClient client = listener.AcceptTcpClient();
                     MessageString?.Invoke($"Accept connection: {client.Client.RemoteEndPoint}");
-                    NetworkStream ns = client.GetStream();
+                    // v1
+                    //NetworkStream ns = client.GetStream();
+                    //byte[] buffer = Encoding.UTF8.GetBytes("Hello, current time " + DateTime.Now.ToLongTimeString());
+                    //ns.Write(buffer, 0, buffer.Length);
+                    //client.Close();
 
-                    byte[] buffer = Encoding.UTF8.GetBytes("Hello, current time " + DateTime.Now.ToLongTimeString());
+                    TcpClientConnection clientConnection = new TcpClientConnection(client);
+                    clientConnection.Disconnect += ClientConnection_Disconnect;
+                    clientConnection.IncomingMessage += ClientConnection_IncomingMessage;
+                    clientConnection.DoWorkAsync();
 
-                    ns.Write(buffer, 0, buffer.Length);
-
-                    client.Close();
+                    clientConnections.Add(clientConnection);
                 }
             }
             catch (Exception ex)
@@ -51,6 +61,17 @@ namespace LanApp3_1Server
                     MessageString?.Invoke("Stop server!");
                 }
             }
+        }
+
+        private void ClientConnection_IncomingMessage(TcpClientConnection clientConnection, string message)
+        {
+            MessageString?.Invoke($"{DateTime.Now.ToLongTimeString()} {clientConnection}: {message}");
+        }
+
+        private void ClientConnection_Disconnect(TcpClientConnection clientConnection)
+        {
+            if (clientConnections.Contains(clientConnection))
+                clientConnections.Remove(clientConnection);
         }
     }
 }

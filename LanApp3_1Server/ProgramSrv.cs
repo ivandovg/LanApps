@@ -25,7 +25,7 @@ namespace LanApp3_1Server
 
         private static void TcpServer_MessageString(string message)
         {
-            Console.WriteLine($"{DateTime.Now.ToLongTimeString()}: {message}");
+            Console.WriteLine(message);
         }
     }
 }
