@@ -14,7 +14,7 @@ namespace LanApp3_2
 {
     public partial class MainForm : Form
     {
-        TcpClient client;
+        UserConnection client;
         public MainForm()
         {
             client = null;
@@ -26,72 +26,73 @@ namespace LanApp3_2
         {
             try
             {
-                if(client != null && client.Connected)
+                if(client != null)
                 {
-                    NetworkStream ns = client.GetStream();
-                    byte[] buffer = Encoding.UTF8.GetBytes("exit");
-                    ns.Write(buffer, 0, buffer.Length);
-                    System.Threading.Thread.Sleep(1000);
-                    client.Close();
+                    client.Disconnect();
                 }
             }
             catch { }
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
+        private async void btnConnect_Click(object sender, EventArgs e)
         {
             try
             {
-                client = new TcpClient();
-                client.Connect(new IPEndPoint(IPAddress.Parse(edAddress.Text), (int)edPort.Value));
-                Task.Run(ReadMessage);
+                btnConnect.Enabled = false;
+                client = new UserConnection("User", IPAddress.Parse(edAddress.Text), (int)edPort.Value);
+                client.ConnectionEstablished += Client_ConnectionEstablished;
+                client.IncomingMessage += Client_IncomingMessage;
+                await client.ConnectAsync();
+                await client.ReadMessageAsync();
             }
             catch (Exception)
             {
                 client = null;
+                btnConnect.Enabled = true;
             }
         }
 
-        private void ReadMessage()
+        private void Client_IncomingMessage(string message)
         {
-            if ((client == null) || !client.Connected)
-                return;
+            Action action = () => { lsbMessages.Items.Add(message); };
+            Invoke(action);
+        }
 
-            NetworkStream ns = client.GetStream();
-            int bytes = 0;
-            byte[] buffer = new byte[256];
-            StringBuilder sb = new StringBuilder();
-            do
-            {
-                bytes = ns.Read(buffer, 0, buffer.Length);
-                sb.Append(Encoding.UTF8.GetString(buffer, 0, bytes));
-            }while(ns.DataAvailable);
-
+        private void Client_ConnectionEstablished(bool IsConnected)
+        {
             Action action = () =>
             {
-                lsbMessages.Items.Add($"{DateTime.Now.ToLongTimeString()}: {sb}");
-                grSendMessage.Enabled = true;
+                if (IsConnected)
+                {
+                    btnConnect.Enabled = false;
+                    grSendMessage.Enabled = true;
+                }
+                else
+                {
+                    btnConnect.Enabled = true;
+                    grSendMessage.Enabled = false;
+                }
             };
+
             if (InvokeRequired)
                 Invoke(action);
             else
                 action();
         }
 
-        private void btnSendMessage_Click(object sender, EventArgs e)
+        private async void btnSendMessage_Click(object sender, EventArgs e)
         {
             if ((client == null) || !client.Connected
                 || string.IsNullOrEmpty(edMessage.Text))
                 return;
 
-            NetworkStream ns = client.GetStream();
-            byte[] buffer = Encoding.UTF8.GetBytes(edMessage.Text);
-            ns.Write(buffer, 0, buffer.Length);
-
-            Task.Run(ReadMessage);
-
+            btnSendMessage.Enabled = false;
+            await client.SendMessageAsync(edMessage.Text);
             edMessage.Text = "";
             edMessage.Focus();
+            
+            await client.ReadMessageAsync();
+            btnSendMessage.Enabled = true;
         }
     }
 }

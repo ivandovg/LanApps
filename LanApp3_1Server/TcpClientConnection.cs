@@ -39,26 +39,31 @@ namespace LanApp3_1Server
             buffer = new byte[256];
             int bytes;
             StringBuilder sb = new StringBuilder();
-
-            while (true)
+            try
             {
-                do
+                while (true)
                 {
-                    bytes = ns.Read(buffer, 0, buffer.Length);
-                    sb.Append(Encoding.UTF8.GetString(buffer, 0, bytes));
-                } while (ns.DataAvailable);
-                IncomingMessage?.Invoke(this, sb.ToString());
+                    do
+                    {
+                        bytes = ns.Read(buffer, 0, buffer.Length);
+                        sb.Append(Encoding.UTF8.GetString(buffer, 0, bytes));
+                    } while (ns.DataAvailable);
+                    IncomingMessage?.Invoke(this, sb.ToString());
 
-                if (("exit").CompareTo(sb.ToString().ToLower()) == 0)
-                    break;
-                else
-                {
-                    buffer = Encoding.UTF8.GetBytes("Message delivered");
-                    ns.Write(buffer, 0, buffer.Length);
+                    if (("exit").CompareTo(sb.ToString().ToLower()) == 0)
+                        break;
+                    else
+                    {
+                        buffer = Encoding.UTF8.GetBytes("Message delivered");
+                        ns.Write(buffer, 0, buffer.Length);
+                    }
+                    sb.Clear();
                 }
-                sb.Clear();
             }
+            catch
+            {
 
+            }
             try { client.Close(); } catch { }
             Disconnect?.Invoke(this);
         }
