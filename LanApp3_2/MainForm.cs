@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
-using System.Net.Sockets;
 
 namespace LanApp3_2
 {
@@ -45,10 +37,11 @@ namespace LanApp3_2
                 await client.ConnectAsync();
                 await client.ReadMessageAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 client = null;
                 btnConnect.Enabled = true;
+                lsbMessages.Items.Add("ERROR: " + ex.Message);
             }
         }
 
@@ -65,12 +58,21 @@ namespace LanApp3_2
                 if (IsConnected)
                 {
                     btnConnect.Enabled = false;
+                    btnDisconnect.Enabled = true;
+                    edAddress.Enabled = false;
+                    edPort.Enabled = false;
+                    edUsername.Enabled = false;
                     grSendMessage.Enabled = true;
                 }
                 else
                 {
                     btnConnect.Enabled = true;
+                    btnDisconnect.Enabled = false;
+                    edAddress.Enabled = true;
+                    edPort.Enabled = true;
+                    edUsername.Enabled = true;
                     grSendMessage.Enabled = false;
+                    lsbMessages.Items.Add("Disconnected!!!");
                 }
             };
 
@@ -93,6 +95,18 @@ namespace LanApp3_2
             
             await client.ReadMessageAsync();
             btnSendMessage.Enabled = true;
+        }
+
+        private void btnDisconnect_Click(object sender, EventArgs e)
+        {
+            if (client!=null && client.Connected)
+            {
+                try
+                {
+                    client.Disconnect();
+                }
+                catch { }
+            }
         }
     }
 }

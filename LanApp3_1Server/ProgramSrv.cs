@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LanApp3_1Server
@@ -18,6 +15,14 @@ namespace LanApp3_1Server
             tcpServer.MessageString += TcpServer_MessageString;
 
             Task server = tcpServer.StartServerAsync();
+            string cmd;
+            do
+            {
+                cmd = Console.ReadLine();
+                if (cmd.ToLower().Equals("list"))
+                    Console.WriteLine(tcpServer.GetActiveConnections());
+                
+            } while (!cmd.ToLower().Equals("exit"));
 
             Console.WriteLine("press ENTER for exit...");
             Console.ReadLine();

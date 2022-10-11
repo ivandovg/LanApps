@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net;
 using System.Net.Sockets;
 
 namespace LanApp3_1Server
@@ -50,7 +47,7 @@ namespace LanApp3_1Server
                     } while (ns.DataAvailable);
                     IncomingMessage?.Invoke(this, sb.ToString());
 
-                    if (("exit").CompareTo(sb.ToString().ToLower()) == 0)
+                    if ("exit".CompareTo(sb.ToString().ToLower()) == 0)
                         break;
                     else
                     {
@@ -60,10 +57,7 @@ namespace LanApp3_1Server
                     sb.Clear();
                 }
             }
-            catch
-            {
-
-            }
+            catch { }
             try { client.Close(); } catch { }
             Disconnect?.Invoke(this);
         }

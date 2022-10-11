@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace LanApp3_1Server
 {
@@ -33,6 +32,7 @@ namespace LanApp3_1Server
                 while (true)
                 {
                     TcpClient client = listener.AcceptTcpClient();
+                    //System.Threading.Thread.Sleep(60000);
                     MessageString?.Invoke($"Accept connection: {client.Client.RemoteEndPoint}");
                     // v1
                     //NetworkStream ns = client.GetStream();
@@ -72,6 +72,16 @@ namespace LanApp3_1Server
         {
             if (clientConnections.Contains(clientConnection))
                 clientConnections.Remove(clientConnection);
+        }
+
+        public string GetActiveConnections()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in clientConnections)
+            {
+                sb.AppendLine(item.ToString());
+            }
+            return sb.ToString();
         }
     }
 }
