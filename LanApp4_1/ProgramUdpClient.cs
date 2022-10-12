@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace LanApp4_1
 {
     class ProgramUdpClient
     {
+        static string username; // имя отправителя
         static string remoteAddress; // адрес получателя
         static int remotePort; // порт получателя
         static int localPort; // порт приема
@@ -18,6 +21,9 @@ namespace LanApp4_1
             Console.Title = "UDPClient Test ";
             try
             {
+                Console.Write("Your name: ");
+                username = Console.ReadLine();
+
                 Console.Write("Local port: ");
                 localPort = int.Parse(Console.ReadLine());
                 Console.Write("Remote port: ");
@@ -39,20 +45,19 @@ namespace LanApp4_1
         static void SendMessage()
         {
             UdpClient client = new UdpClient();
-            string message;
-            byte[] buffer;
+            MessagePacket packet;
             int bytes;
             Console.WriteLine("Enter your message: ");
             try
             {
                 while (true)
                 {
-                    message = Console.ReadLine();
-                    if (message.ToLower().Equals("exit"))
+                    packet = new MessagePacket(username, Console.ReadLine());
+                    if (packet.MessageText.ToLower().Equals("exit"))
                         break;
                     else
                     {
-                        buffer = Encoding.UTF8.GetBytes(message);
+                        byte[] buffer = packet.ToByteArray();
                         bytes = client.Send(buffer, buffer.Length, remoteAddress, remotePort);
                         if (buffer.Length != bytes)
                         {
@@ -78,12 +83,18 @@ namespace LanApp4_1
             try
             {
                 byte[] buffer;
-                string message;
                 while (true)
                 {
-                    buffer = server.Receive(ref endPoint);
-                    message = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
-                    Console.WriteLine($"{endPoint} >> {message}");
+                    MemoryStream ms = new MemoryStream();
+                    do
+                    {
+                        buffer = server.Receive(ref endPoint);
+                        ms.Write(buffer, 0, buffer.Length);
+                    } while (server.Available > 0);
+
+                    MessagePacket packet = MessagePacket.FromByteArray(ms.ToArray());
+                    Console.WriteLine(packet);
+                    ms.Close();
                 }
             }
             catch(Exception ex)
@@ -95,5 +106,6 @@ namespace LanApp4_1
                 server.Close();
             }
         }
+
     }
 }
