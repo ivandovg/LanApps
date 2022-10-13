@@ -16,6 +16,7 @@ namespace LanApp6_1
     {
         UdpClient senderUdp = null; // new UdpClient();
         UdpClient receiverUdp = null;
+        IPEndPoint senderEP = null;
         bool IsConnected = false;
         public MainForm()
         {
@@ -27,6 +28,7 @@ namespace LanApp6_1
             try
             {
                 senderUdp = new UdpClient();
+                senderEP = new IPEndPoint(IPAddress.Parse(edRemoteIp.Text), (int)edLocalPort.Value);
                 IsConnected = true;
                 Task.Run(ReceiveMessage);
                 // after connection
@@ -67,7 +69,7 @@ namespace LanApp6_1
 
             btnSendText.Enabled = false;
             byte[] buffer = Encoding.UTF8.GetBytes($"{edUsername.Text} >> {edMessage.Text}");
-            senderUdp.Send(buffer, buffer.Length, edRemoteIp.Text, (int)edLocalPort.Value);
+            senderUdp.Send(buffer, buffer.Length, senderEP);
             btnSendText.Enabled = true;
             edMessage.Focus();
         }
@@ -75,7 +77,7 @@ namespace LanApp6_1
         private void ReceiveMessage()
         {
             receiverUdp = new UdpClient((int)edLocalPort.Value);
-            receiverUdp.JoinMulticastGroup(IPAddress.Parse(edRemoteIp.Text), 20);
+            receiverUdp.JoinMulticastGroup(IPAddress.Parse(edRemoteIp.Text), 50);
             IPEndPoint remoteIp = null;
             string localIp = LocalIPAddress();
             try

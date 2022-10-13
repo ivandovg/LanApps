@@ -132,7 +132,7 @@ namespace LanApp6_1
             this.edRemoteIp.Name = "edRemoteIp";
             this.edRemoteIp.Size = new System.Drawing.Size(115, 20);
             this.edRemoteIp.TabIndex = 2;
-            this.edRemoteIp.Text = "224.1.1.1";
+            this.edRemoteIp.Text = "235.10.10.10";
             // 
             // edLocalPort
             // 
