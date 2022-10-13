@@ -12,6 +12,10 @@ namespace LanApp6_3Server
 {
     public class TcpClientConnection
     {
+        static int count = 0;
+        private int clientId;
+        public int ClientId => clientId;
+
         TcpClient connection;
 
         public event Action<TcpClientConnection, MessagePacket> IncomingMessage;
@@ -20,41 +24,42 @@ namespace LanApp6_3Server
         public TcpClientConnection(TcpClient client)
         {
             connection = client;
+            clientId = ++count;
         }
-
+        public override string ToString()
+        {
+            return "Connection Id: " + clientId.ToString();
+        }
+        private static MessagePacket messageDelivered = new MessagePacket("server", "Message delivered!");
         public void DoWork()
         {
-            if (connection != null || !connection.Connected)
+            if (connection == null || !connection.Connected)
                 return;
 
             NetworkStream ns = connection.GetStream();
 
             MessagePacket packet = new MessagePacket("server", "Hello");
-            byte[] buffer = packet.ToByteArray();
-            ns.Write(buffer, 0, buffer.Length);
-            int bytes;
-            while (true)
+            packet.ToStream(ns);
+
+            try
             {
-                buffer = new byte[1024];
-                MemoryStream ms = new MemoryStream();
-                do
+                while (true)
                 {
-                    bytes = ns.Read(buffer, 0, buffer.Length);
-                    ms.Write(buffer, 0, bytes);
-                } while (ns.DataAvailable);
-
-                packet = MessagePacket.FromStream(ms);
-                IncomingMessage?.Invoke(this, packet);
-
-                packet = new MessagePacket("server", "Message delivered");
-                buffer = packet.ToByteArray();
-                ns.Write(buffer, 0, buffer.Length);
-
-                if (packet.MessageText.ToLower().Equals("close"))
-                    break;
+                    packet = MessagePacket.FromStream(ns);
+                    if (packet != null && packet.MessageText.ToLower().Equals("close"))
+                        break;
+                    else
+                    {
+                        IncomingMessage?.Invoke(this, packet);
+                        messageDelivered.ToStream(ns);
+                    }
+                }
+            }
+            finally
+            {
+                ClientDisconnected?.Invoke(this);
             }
 
-            ClientDisconnected?.Invoke(this);
         }
 
         public Task DoWorkAsync() => Task.Run(DoWork);

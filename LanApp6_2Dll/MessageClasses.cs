@@ -52,6 +52,10 @@ namespace LanApp6_2Dll
             return ms.ToArray();
 
         }
+        public void ToStream(Stream stream)
+        {
+            bf.Serialize(stream, this);
+        }
         static BinaryFormatter bf = new BinaryFormatter();
         public static MessagePacket FromByteArray(byte[] SourceArray)
         {

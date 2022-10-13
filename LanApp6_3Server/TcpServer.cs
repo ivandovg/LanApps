@@ -16,6 +16,8 @@ namespace LanApp6_3Server
 
         public event Action<TcpClientConnection, MessagePacket> IncomingClientMessage;
         public event Action<TcpClientConnection> ClientDisconnected;
+        public event Action<TcpClientConnection> ClientConnected;
+        public event Action<TcpServer, bool> ServerWorking; 
 
         public TcpServer(string address, int port)
         {
@@ -31,14 +33,22 @@ namespace LanApp6_3Server
 
             server = new TcpListener(endPoint);
             server.Start(10);
-
-            while (true)
+            ServerWorking?.Invoke(this, true);
+            try
             {
-                TcpClient client = server.AcceptTcpClient();
-                TcpClientConnection clientConnection = new TcpClientConnection(client);
-                clientConnection.IncomingMessage += ClientConnection_IncomingMessage;
-                clientConnection.ClientDisconnected += ClientConnection_ClientDisconnected;
-                clientConnection.DoWorkAsync();
+                while (true)
+                {
+                    TcpClient client = server.AcceptTcpClient();
+                    TcpClientConnection clientConnection = new TcpClientConnection(client);
+                    clientConnection.IncomingMessage += ClientConnection_IncomingMessage;
+                    clientConnection.ClientDisconnected += ClientConnection_ClientDisconnected;
+                    clientConnection.DoWorkAsync();
+                    ClientConnected?.Invoke(clientConnection);
+                }
+            }
+            finally
+            {
+                StopServer();
             }
         }
 
@@ -64,6 +74,7 @@ namespace LanApp6_3Server
             finally
             {
                 server = null;
+                ServerWorking?.Invoke(this, true);
             }
         }
     }
