@@ -109,7 +109,7 @@ namespace LanApp6_4Client
 
         private void btnDisconnect_Click(object sender, EventArgs e)
         {
-            if (clientConnect == null && !clientConnect.Connected)
+            if (clientConnect == null)
                 return;
 
             try
@@ -118,7 +118,7 @@ namespace LanApp6_4Client
             }
             catch(Exception ex)
             {
-                MessageBox.Show("ERROR: " + ex.Message);
+                //MessageBox.Show("ERROR: " + ex.Message);
             }
         }
     }
