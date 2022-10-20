@@ -41,13 +41,18 @@ namespace LanApp8_2
             this.edHost = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.grMessage = new System.Windows.Forms.GroupBox();
-            this.edFrom = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.edTo = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.edMessageText = new System.Windows.Forms.RichTextBox();
             this.edSubject = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.edMessageText = new System.Windows.Forms.RichTextBox();
+            this.edTo = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.edFrom = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.edFile = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.grConnection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edPort)).BeginInit();
             this.grMessage.SuspendLayout();
@@ -139,7 +144,7 @@ namespace LanApp8_2
             this.edPort.Size = new System.Drawing.Size(112, 20);
             this.edPort.TabIndex = 13;
             this.edPort.Value = new decimal(new int[] {
-            587,
+            465,
             0,
             0,
             0});
@@ -172,6 +177,10 @@ namespace LanApp8_2
             // 
             // grMessage
             // 
+            this.grMessage.Controls.Add(this.button2);
+            this.grMessage.Controls.Add(this.button1);
+            this.grMessage.Controls.Add(this.edFile);
+            this.grMessage.Controls.Add(this.label8);
             this.grMessage.Controls.Add(this.edMessageText);
             this.grMessage.Controls.Add(this.edSubject);
             this.grMessage.Controls.Add(this.label7);
@@ -186,37 +195,13 @@ namespace LanApp8_2
             this.grMessage.TabStop = false;
             this.grMessage.Text = "Message";
             // 
-            // edFrom
+            // edMessageText
             // 
-            this.edFrom.Location = new System.Drawing.Point(66, 23);
-            this.edFrom.Name = "edFrom";
-            this.edFrom.Size = new System.Drawing.Size(202, 20);
-            this.edFrom.TabIndex = 13;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 26);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(30, 13);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "From";
-            // 
-            // edTo
-            // 
-            this.edTo.Location = new System.Drawing.Point(325, 23);
-            this.edTo.Name = "edTo";
-            this.edTo.Size = new System.Drawing.Size(187, 20);
-            this.edTo.TabIndex = 15;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(299, 26);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(20, 13);
-            this.label6.TabIndex = 14;
-            this.label6.Text = "To";
+            this.edMessageText.Location = new System.Drawing.Point(18, 75);
+            this.edMessageText.Name = "edMessageText";
+            this.edMessageText.Size = new System.Drawing.Size(494, 192);
+            this.edMessageText.TabIndex = 18;
+            this.edMessageText.Text = "";
             // 
             // edSubject
             // 
@@ -234,13 +219,74 @@ namespace LanApp8_2
             this.label7.TabIndex = 16;
             this.label7.Text = "Subject";
             // 
-            // edMessageText
+            // edTo
             // 
-            this.edMessageText.Location = new System.Drawing.Point(18, 75);
-            this.edMessageText.Name = "edMessageText";
-            this.edMessageText.Size = new System.Drawing.Size(494, 207);
-            this.edMessageText.TabIndex = 18;
-            this.edMessageText.Text = "";
+            this.edTo.Location = new System.Drawing.Point(325, 23);
+            this.edTo.Name = "edTo";
+            this.edTo.Size = new System.Drawing.Size(187, 20);
+            this.edTo.TabIndex = 15;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(299, 26);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(20, 13);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "To";
+            // 
+            // edFrom
+            // 
+            this.edFrom.Location = new System.Drawing.Point(66, 23);
+            this.edFrom.Name = "edFrom";
+            this.edFrom.Size = new System.Drawing.Size(202, 20);
+            this.edFrom.TabIndex = 13;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(15, 26);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(30, 13);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "From";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(23, 278);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(23, 13);
+            this.label8.TabIndex = 19;
+            this.label8.Text = "File";
+            // 
+            // edFile
+            // 
+            this.edFile.Location = new System.Drawing.Point(52, 275);
+            this.edFile.Name = "edFile";
+            this.edFile.ReadOnly = true;
+            this.edFile.Size = new System.Drawing.Size(293, 20);
+            this.edFile.TabIndex = 20;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(351, 273);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 21;
+            this.button1.Text = "Add";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(430, 273);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 22;
+            this.button2.Text = "Clear";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // MainForm
             // 
@@ -249,6 +295,8 @@ namespace LanApp8_2
             this.ClientSize = new System.Drawing.Size(551, 428);
             this.Controls.Add(this.grMessage);
             this.Controls.Add(this.grConnection);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SMTP Test";
@@ -282,6 +330,11 @@ namespace LanApp8_2
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox edFrom;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox edFile;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.OpenFileDialog dlgOpen;
     }
 }
 
