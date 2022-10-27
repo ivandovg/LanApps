@@ -28,19 +28,28 @@ namespace LanAppFileClient
             dlgSave.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         }
 
-        private void MainFormFileClient_FormClosing(object sender, FormClosingEventArgs e)
+        private void CloseConnection()
         {
             if (client == null)
                 return;
 
             try
             {
+                lsbList.Items.Clear();
                 Text = "Wait close connection...";
                 MessagePacket message = new MessagePacket() { MessageType = MessageType.Text, MessageText = "close" };
                 message.ToStream(stream);
                 System.Threading.Thread.Sleep(1000);
             }
             catch { }
+            finally
+            {
+                client = null;
+            }
+        }
+        private void MainFormFileClient_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CloseConnection();
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -70,14 +79,8 @@ namespace LanAppFileClient
             else
             {
                 btnConnect.Text = "Connect";
-                try
-                {
-                    client.Close();
-                }
-                finally
-                {
-                    client = null;
-                }
+                CloseConnection();
+                Text = "Click 'Connect'";
             }
         }
 
