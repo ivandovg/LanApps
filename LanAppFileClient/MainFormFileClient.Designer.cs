@@ -103,6 +103,7 @@ namespace LanAppFileClient
             this.lsbList.Name = "lsbList";
             this.lsbList.Size = new System.Drawing.Size(482, 277);
             this.lsbList.TabIndex = 5;
+            this.lsbList.DoubleClick += new System.EventHandler(this.lsbList_DoubleClick);
             // 
             // MainFormFileClient
             // 
