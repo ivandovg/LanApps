@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanApp8_2", "LanApp8_2\LanA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanApp9_1", "LanApp9_1\LanApp9_1.csproj", "{C79BBB03-718C-4DAD-8598-1C50DE121EE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanAppFileServer", "LanAppFileServer\LanAppFileServer.csproj", "{F7DC5429-9991-4B66-BB11-59F3D4D44649}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanAppFileClient", "LanAppFileClient\LanAppFileClient.csproj", "{D4823E6A-91AF-41E4-94A4-775168A7D179}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +115,14 @@ Global
 		{C79BBB03-718C-4DAD-8598-1C50DE121EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C79BBB03-718C-4DAD-8598-1C50DE121EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C79BBB03-718C-4DAD-8598-1C50DE121EE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7DC5429-9991-4B66-BB11-59F3D4D44649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7DC5429-9991-4B66-BB11-59F3D4D44649}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7DC5429-9991-4B66-BB11-59F3D4D44649}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7DC5429-9991-4B66-BB11-59F3D4D44649}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4823E6A-91AF-41E4-94A4-775168A7D179}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4823E6A-91AF-41E4-94A4-775168A7D179}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4823E6A-91AF-41E4-94A4-775168A7D179}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4823E6A-91AF-41E4-94A4-775168A7D179}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

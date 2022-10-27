@@ -14,7 +14,7 @@ namespace LanApp6_2Dll
         Text,
         File,
         Image,
-        ProcessList,
+        List,
         Other
     }
     [Serializable]
@@ -25,6 +25,7 @@ namespace LanApp6_2Dll
         public string MessageText { get; set; }
         public DateTime TimeMessage { get; private set; }
         public byte[] Content { get; set; }
+        public object Data { get; set; }
 
         public MessagePacket()
         {

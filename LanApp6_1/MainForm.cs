@@ -50,6 +50,7 @@ namespace LanApp6_1
                 IsConnected = false;
 
                 senderUdp.Close();
+                senderUdp.JoinMulticastGroup(IPAddress.Parse(edRemoteIp.Text), 50);
                 senderUdp = null;
                 //receiverUdp.Close();
             }
